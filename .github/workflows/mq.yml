@@ -1,0 +1,15 @@
+name: mq-combined-tree
+on:
+  merge_group:
+jobs:
+  combined:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: combined tree build + secret PRESENCE
+        env:
+          PROBE: ${{ secrets.C246_PROBE }}
+        run: |
+          echo "event = merge_group"
+          if [ -n "$PROBE" ]; then echo "SECRET: PRESENT"; else echo "SECRET: ABSENT"; fi
+          if [ -f ./c246-build.sh ]; then echo "CONTRIB FILE: present"; bash ./c246-build.sh; else echo "CONTRIB FILE: absent"; fi
